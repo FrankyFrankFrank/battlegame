@@ -48,11 +48,24 @@ $('document').ready(function(){
 	},
 
 	update : function(){
-		$('#player1').html( player1.name + " - HP:" + player1.health );
-		$('#player2').html( player2.name + " - HP:" + player2.health );
+
+		if ( player1.health <= 0 ){
+
+			$('#player1').html('DEAD');
+
+		} else if ( player2.health <= 0 ) {
+
+			$('#player2').html('DEAD');
+
+		} else {
+
+			$('#player1').html( player1.name + " - HP:" + player1.health );
+			$('#player2').html( player2.name + " - HP:" + player2.health );
+		}
+		
 	}
 
-	};
+	}
 	//END APP
 
 	var player1 = new battlegame.Warrior("Adam", 100, 65, 4);
