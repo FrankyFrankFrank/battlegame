@@ -8,27 +8,37 @@ $('document').ready(function(){
 		this.health = hp;
 		this.damage = dmg;
 		this.block = block;
+		this.update = function (){
+			if (this.health <= 0) {
+				$('#attackbuttons').html('<div id="startover">Start Over</div>');
+				return "Dead";
+			} else {
+				return this.health;
+			}
+		}
+
 	},
+
 
 	// INITIALIZE
 	init : function(){
+
+		player1 = new battlegame.Warrior("Adam", 100, 65, 4);
+		player2 = new battlegame.Warrior("Kathleen", 100, 30, 20);
 
 		//Set up battle
 		$('body').append("<div id='player1'></div><div id='player2'></div>");
 
 		//Display Health
-		$('#player1').html( player1.name + " - HP:" + player1.health );
-		$('#player2').html( player2.name + " - HP:" + player2.health );
+			$('#player1').html( player1.name + " - HP:" + player1.health );
+			$('#player2').html( player2.name + " - HP:" + player2.health );
 
 		// Display Attack Buttons
-		$('body').append("<div id='p1attack'>P1 attack</div><div id='p2attack'>P2 attack</div>");
+		$('body').append("<div id='attackbuttons'><div id='p1attack'>P1 attack</div><div id='p2attack'>P2 attack</div></div>");
 
 	},
 
 	listeners : function(){
-		$('#start').click(function(){
-			
-		});
 
 		$('#p1attack').click(function(){
 			battlegame.attack(player1,player2);
@@ -37,39 +47,28 @@ $('document').ready(function(){
 		$('#p2attack').click(function(){
 			battlegame.attack(player2,player1);
 		});
+
+		$('#startover').click(function(){
+			battlegame.init();
+		})
 	},
 
 	attack : function( attacker , defender ){
 
 		defender.health = defender.health - (attacker.damage - defender.block);
 
-		console.log(defender.health);
 		battlegame.update();
 	},
 
 	update : function(){
 
-		if ( player1.health <= 0 ){
+		$('#player1').html( player1.name + " - HP:" + player1.update() );
+		$('#player2').html( player2.name + " - HP:" + player2.update() );
 
-			$('#player1').html('DEAD');
-
-		} else if ( player2.health <= 0 ) {
-
-			$('#player2').html('DEAD');
-
-		} else {
-
-			$('#player1').html( player1.name + " - HP:" + player1.health );
-			$('#player2').html( player2.name + " - HP:" + player2.health );
-		}
-		
 	}
 
 	}
 	//END APP
-
-	var player1 = new battlegame.Warrior("Adam", 100, 65, 4);
-	var player2 = new battlegame.Warrior("Kathleen", 100, 30, 20);
 
 	battlegame.init();
 	battlegame.listeners();
